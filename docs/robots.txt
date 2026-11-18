@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://copywriting-software.github.io/ai-assistant-for-writing/sitemap.xml

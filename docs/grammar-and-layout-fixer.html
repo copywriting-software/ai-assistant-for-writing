@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grammar Checker, Rewrite Hotkey, and EN/RU Keyboard Layout Fixer</title>
+  <meta name="description" content="Fix grammar, spelling, and wrong EN/RU keyboard layout text (ghbdtn to привет) with a global macOS shortcut, or rewrite selected text concisely.">
+  <link rel="canonical" href="https://copywriting-software.github.io/ai-assistant-for-writing/grammar-and-layout-fixer.html">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Grammar Checker, Rewrite Hotkey, and EN/RU Keyboard Layout Fixer",
+    "url": "https://copywriting-software.github.io/ai-assistant-for-writing/grammar-and-layout-fixer.html"
+  }
+  </script>
+</head>
+<body>
+<div class="wrap">
+  <header class="site-header">
+    <a class="brand" href="./">AI Assistant for Writing</a>
+    <nav class="top-nav" aria-label="Primary">
+      <a href="./">Overview</a>
+      <a href="system-wide-autocomplete.html">Autocomplete</a>
+      <a href="local-ollama-writing-assistant.html">Local Ollama</a>
+      <a href="grammar-and-layout-fixer.html" aria-current="page">Grammar &amp; Layout</a>
+      <a href="architecture-and-benchmark.html">Architecture</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Grammar, rewrite, and keyboard layout fixer</h1>
+    <p>Typing a full sentence on the wrong keyboard layout or sending a rushed message with typos happens often when switching between languages. Two global shortcuts handle cleanup in place without leaving the active window.</p>
+
+    <h2>Instant EN/RU keyboard layout repair</h2>
+    <p>The <code>encoding.rs</code> module detects when ASCII characters form Russian words typed on a QWERTY layout (for example, <code>ghbdtn rfr ltkf</code>) and converts them deterministically to Cyrillic (<code>привет как дела</code>) before sending the text to the proofreading prompt. That way, the model sees readable words and can add punctuation and capitalization accurately.</p>
+    <p>You can also convert text locally from the command line without calling any AI model:</p>
+<pre><code>cargo run -- layout "Ghbdtn? rfr ltkf&amp;"
+# Output: Привет, как дела?
+
+cargo run -- layout "руддщ цщкдв"
+# Output: hello world</code></pre>
+
+    <h2>One-hotkey proofreading (Cmd + Shift + G)</h2>
+    <p>Select a sentence or paragraph and press <code>Cmd + Shift + G</code>. If nothing is selected, the assistant uses the text before the cursor. The edit request runs asynchronously in the Rust daemon, so you can press <code>Esc</code> to cancel if you change your mind while the model is working.</p>
+
+    <h2 id="rewrite">Rewrite selected text (Cmd + Shift + R)</h2>
+    <p>Select text and press <code>Cmd + Shift + R</code> to rewrite it concisely while keeping facts, numbers, and names intact. From the CLI, four rewrite styles are available: <code>concise</code>, <code>professional</code>, <code>friendly</code>, and <code>clear</code>.</p>
+<pre><code>cargo run -- rewrite "Need to call tomorrow to discuss all project details" --style professional</code></pre>
+  </main>
+
+  <footer class="site-footer">
+    <a href="./">Back to overview</a> · <a href="local-ollama-writing-assistant.html">Local Ollama setup</a>
+  </footer>
+</div>
+</body>
+</html>

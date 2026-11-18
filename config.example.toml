@@ -1,0 +1,38 @@
+# Copy to `config.local.toml` or `~/.config/ai-assistant-for-writing/config.toml`
+
+[provider]
+# Options: "corebox", "openai-compatible", "gemini", "ollama"
+kind = "corebox"
+base_url = "https://corebox.fyi/v1"
+api_key = "ak_YOUR_COREBOX_OR_BYOK_KEY"
+autocomplete_model = "gemini-3.5-flash-lite"
+edit_model = "gemini-3.5-flash-lite"
+timeout_ms = 15000
+
+# Local-first free alternative (Ollama):
+# kind = "ollama"
+# base_url = "http://localhost:11434"
+# autocomplete_model = "qwen2.5:1.5b"
+# edit_model = "qwen2.5:1.5b"
+
+[behavior]
+debounce_ms = 350
+max_completion_tokens = 48
+max_context_chars = 600
+cache_size = 128
+min_prefix_chars = 4
+
+[privacy]
+block_secure_fields = true
+block_sensitive_patterns = true
+blocked_apps = [
+  "1password",
+  "bitwarden",
+  "keepassxc",
+  "keychain access",
+  "terminal",
+  "iterm2",
+  "warp",
+  "alacritty",
+  "kitty",
+]

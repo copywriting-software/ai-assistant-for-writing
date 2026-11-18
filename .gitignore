@@ -1,0 +1,6 @@
+/target/
+*.local.toml
+.env
+.DS_Store
+macos/ai-writing-macos-helper
+macos/AIWritingHelper.app/

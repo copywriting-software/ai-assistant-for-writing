@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Assistant for Writing on macOS: Ghost Text Autocomplete, Grammar, and Local Ollama</title>
+  <meta name="description" content="Open-source Rust and Swift AI writing assistant for macOS. System-wide ghost text autocomplete, one-shortcut grammar and keyboard layout fixes, and local Ollama support.">
+  <link rel="canonical" href="https://copywriting-software.github.io/ai-assistant-for-writing/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI Assistant for Writing on macOS">
+  <meta property="og:description" content="System-wide ghost text autocomplete, grammar and keyboard layout fixes, and local Ollama support built in Rust and Swift.">
+  <meta property="og:url" content="https://copywriting-software.github.io/ai-assistant-for-writing/">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "AI Assistant for Writing",
+    "operatingSystem": "macOS",
+    "applicationCategory": "ProductivityApplication",
+    "license": "https://opensource.org/licenses/MIT",
+    "url": "https://copywriting-software.github.io/ai-assistant-for-writing/",
+    "codeRepository": "https://github.com/copywriting-software/ai-assistant-for-writing",
+    "programmingLanguage": ["Rust", "Swift"]
+  }
+  </script>
+</head>
+<body>
+<div class="wrap">
+  <header class="site-header">
+    <a class="brand" href="./">AI Assistant for Writing</a>
+    <nav class="top-nav" aria-label="Primary">
+      <a href="./" aria-current="page">Overview</a>
+      <a href="system-wide-autocomplete.html">Autocomplete</a>
+      <a href="local-ollama-writing-assistant.html">Local Ollama</a>
+      <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
+      <a href="architecture-and-benchmark.html">Architecture</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>AI Assistant for Writing for macOS</h1>
+    <p>Most writing tools lock suggestions inside a single web editor or browser extension. This project runs as a background Rust daemon paired with a lightweight macOS Accessibility helper, so inline autocomplete, grammar fixes, and text rewriting work inside Notes, Mail, Slack, Telegram, Chrome, and TextEdit.</p>
+
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">View on GitHub</a>
+      <a class="btn btn-secondary" href="local-ollama-writing-assistant.html">Run offline with Ollama</a>
+    </div>
+
+    <h2>What the assistant does</h2>
+    <div class="card-grid">
+      <article class="card">
+        <h3><a href="system-wide-autocomplete.html">System-wide ghost text</a></h3>
+        <p>Shows a floating completion next to your cursor. Accept the full line with <code>Tab</code>, one word with <code>Option + Right</code>, or dismiss with <code>Esc</code>.</p>
+      </article>
+      <article class="card">
+        <h3><a href="grammar-and-layout-fixer.html">Grammar and layout repair</a></h3>
+        <p>Press <code>Cmd + Shift + G</code> to fix spelling, punctuation, or text typed on the wrong EN/RU keyboard layout.</p>
+      </article>
+      <article class="card">
+        <h3><a href="grammar-and-layout-fixer.html#rewrite">Concise rewrite hotkey</a></h3>
+        <p>Press <code>Cmd + Shift + R</code> to shorten or clarify a selected paragraph in place without switching windows.</p>
+      </article>
+      <article class="card">
+        <h3><a href="local-ollama-writing-assistant.html">Local-first or BYOK API</a></h3>
+        <p>Works offline with local Ollama models like <code>qwen2.5:1.5b</code>, or connects to OpenAI-compatible, Gemini, and Corebox endpoints.</p>
+      </article>
+    </div>
+
+    <h2>Quick start on macOS</h2>
+    <p>You need Rust, Xcode command-line tools (<code>swiftc</code>), and Accessibility plus Input Monitoring permissions for the terminal running the daemon.</p>
+<pre><code>git clone https://github.com/copywriting-software/ai-assistant-for-writing.git
+cd ai-assistant-for-writing
+
+cargo test
+./macos/build.sh
+
+# Option A: local free model via Ollama
+ollama pull qwen2.5:1.5b
+cargo run -- check
+
+# Option B: cloud provider via API key
+export OPENAI_API_KEY="sk-..."
+cargo run -- check
+
+# Start the background writing daemon
+cargo run --release -- daemon</code></pre>
+
+    <h2>Keyboard shortcuts</h2>
+    <table>
+      <thead>
+        <tr><th>Shortcut</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>Tab</code></td><td>Accept the full ghost text suggestion</td></tr>
+        <tr><td><code>Option + Right</code></td><td>Accept the next word only</td></tr>
+        <tr><td><code>Esc</code></td><td>Dismiss the suggestion and pause re-triggering on that word</td></tr>
+        <tr><td><code>Cmd + Shift + G</code></td><td>Fix grammar, punctuation, and wrong EN/RU keyboard layout</td></tr>
+        <tr><td><code>Cmd + Shift + R</code></td><td>Rewrite selected text in concise style</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Privacy rules built into the core</h2>
+    <p>Every request passes through <code>PrivacyGuard</code> before any prompt leaves your machine or touches local memory. The assistant skips password fields (<code>AXSecureTextField</code>), password managers (1Password, Bitwarden, KeePassXC, Keychain Access), terminal emulators (Terminal, iTerm2, Warp, Alacritty, Kitty), and text matching API key prefixes or 16-digit card numbers.</p>
+
+    <h2>Documentation by topic</h2>
+    <ul>
+      <li><a href="system-wide-autocomplete.html">System-wide ghost text autocomplete on macOS</a>: how Accessibility snapshots, cursor positioning, and word-by-word acceptance work.</li>
+      <li><a href="local-ollama-writing-assistant.html">Private AI writing with Ollama</a>: running offline copywriting and editing models with zero cloud calls.</li>
+      <li><a href="grammar-and-layout-fixer.html">Grammar checker, rewrite, and EN/RU layout fixer</a>: instant local layout repair and LLM proofreading.</li>
+      <li><a href="architecture-and-benchmark.html">Rust and Swift architecture</a>: adaptive debounce, sliding-window prefix cache, and local phrase memory.</li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    MIT License. Maintained by <a href="https://github.com/copywriting-software">copywriting-software</a>.
+  </footer>
+</div>
+</body>
+</html>

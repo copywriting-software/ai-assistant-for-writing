@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local-First AI Writing Assistant with Ollama (Offline &amp; Private)</title>
+  <meta name="description" content="Run an offline AI writing assistant on macOS with Ollama and qwen2.5:1.5b. Zero cloud API calls, local phrase memory, and built-in privacy filters.">
+  <link rel="canonical" href="https://copywriting-software.github.io/ai-assistant-for-writing/local-ollama-writing-assistant.html">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Local-First AI Writing Assistant with Ollama",
+    "url": "https://copywriting-software.github.io/ai-assistant-for-writing/local-ollama-writing-assistant.html"
+  }
+  </script>
+</head>
+<body>
+<div class="wrap">
+  <header class="site-header">
+    <a class="brand" href="./">AI Assistant for Writing</a>
+    <nav class="top-nav" aria-label="Primary">
+      <a href="./">Overview</a>
+      <a href="system-wide-autocomplete.html">Autocomplete</a>
+      <a href="local-ollama-writing-assistant.html" aria-current="page">Local Ollama</a>
+      <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
+      <a href="architecture-and-benchmark.html">Architecture</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Private local-first AI writing with Ollama</h1>
+    <p>Sending every draft message or internal note to a third-party cloud API is unnecessary for short completions and grammar fixes. By default, <code>ai-assistant-for-writing</code> targets a local Ollama instance on <code>http://localhost:11434</code> using <code>qwen2.5:1.5b</code>.</p>
+
+    <h2>Setup in three commands</h2>
+<pre><code>ollama pull qwen2.5:1.5b
+cargo run -- check
+cargo run --release -- daemon</code></pre>
+    <p>You can test completions, grammar fixes, or rewrites directly from the terminal before starting the background daemon:</p>
+<pre><code>cargo run -- complete "Hi, wanted to follow up on"
+cargo run -- fix "ghbdtn rfr ltkf"
+cargo run -- rewrite "We need to hop on a call tomorrow to go over every single detail." --style concise</code></pre>
+
+    <h2>Switching to OpenAI, Gemini, or Corebox</h2>
+    <p>If you prefer a cloud model for heavier rewriting, copy <code>config.example.toml</code> to <code>config.local.toml</code> or set environment variables (<code>OPENAI_API_KEY</code>, <code>GEMINI_API_KEY</code>, <code>COREBOX_API_KEY</code>). You can also set separate models for fast inline autocomplete and editing via <code>autocomplete_model</code> and <code>edit_model</code>.</p>
+
+    <h2>Testing without any model server</h2>
+    <p>Pass <code>--mock</code> to any CLI subcommand or daemon invocation to run with the deterministic offline mock provider. This is useful for verifying Accessibility permissions, shortcuts, and JSON-RPC behavior without waiting on a model.</p>
+<pre><code>cargo run -- --mock daemon --stdio</code></pre>
+  </main>
+
+  <footer class="site-footer">
+    <a href="./">Back to overview</a> · <a href="grammar-and-layout-fixer.html">Grammar &amp; layout fixer</a>
+  </footer>
+</div>
+</body>
+</html>
