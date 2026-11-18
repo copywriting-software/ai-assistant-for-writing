@@ -6,6 +6,9 @@
   <title>Local-First AI Writing Assistant with Ollama (Offline &amp; Private)</title>
   <meta name="description" content="Run an offline AI writing assistant on macOS with Ollama and qwen2.5:1.5b. Zero cloud API calls, local phrase memory, and built-in privacy filters.">
   <link rel="canonical" href="https://copywriting-software.github.io/ai-assistant-for-writing/local-ollama-writing-assistant.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
   {
@@ -17,42 +20,108 @@
   </script>
 </head>
 <body>
-<div class="wrap">
   <header class="site-header">
-    <a class="brand" href="./">AI Assistant for Writing</a>
-    <nav class="top-nav" aria-label="Primary">
-      <a href="./">Overview</a>
-      <a href="system-wide-autocomplete.html">Autocomplete</a>
-      <a href="local-ollama-writing-assistant.html" aria-current="page">Local Ollama</a>
-      <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
-      <a href="architecture-and-benchmark.html">Architecture</a>
-    </nav>
+    <div class="container masthead">
+      <a class="brand" href="./">AI Assistant for Writing</a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="./">Overview</a>
+        <a href="system-wide-autocomplete.html">Autocomplete</a>
+        <a href="local-ollama-writing-assistant.html" aria-current="page">Local Ollama</a>
+        <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
+        <a href="architecture-and-benchmark.html">Architecture</a>
+        <a class="btn btn--primary btn--sm" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <h1>Private local-first AI writing with Ollama</h1>
-    <p>Sending every draft message or internal note to a third-party cloud API is unnecessary for short completions and grammar fixes. By default, <code>ai-assistant-for-writing</code> targets a local Ollama instance on <code>http://localhost:11434</code> using <code>qwen2.5:1.5b</code>.</p>
-
-    <h2>Setup in three commands</h2>
-<pre><code>ollama pull qwen2.5:1.5b
+    <section class="band band--hero" aria-labelledby="page-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 id="page-title">Private local-first AI writing with Ollama</h1>
+          <p class="lead">Targets localhost:11434 with qwen2.5:1.5b by default, keeping drafts off external servers.</p>
+          <div class="cta-row">
+            <a class="btn btn--primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+            <a class="btn" href="grammar-and-layout-fixer.html">Grammar &amp; layout</a>
+          </div>
+        </div>
+        <div class="hero-stage">
+          <pre><code>ollama pull qwen2.5:1.5b
 cargo run -- check
 cargo run --release -- daemon</code></pre>
-    <p>You can test completions, grammar fixes, or rewrites directly from the terminal before starting the background daemon:</p>
-<pre><code>cargo run -- complete "Hi, wanted to follow up on"
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--paper-2" aria-labelledby="cli-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="cli-title">Test from the terminal</h2>
+          <p>Run completions, grammar fixes, and style rewrites directly before enabling the background daemon.</p>
+        </div>
+        <pre><code>cargo run -- complete "Hi, wanted to follow up on"
 cargo run -- fix "ghbdtn rfr ltkf"
-cargo run -- rewrite "We need to hop on a call tomorrow to go over every single detail." --style concise</code></pre>
+cargo run -- rewrite "We need to hop on a call tomorrow to go over every detail." --style concise</code></pre>
+      </div>
+    </section>
 
-    <h2>Switching to OpenAI, Gemini, or Corebox</h2>
-    <p>If you prefer a cloud model for heavier rewriting, copy <code>config.example.toml</code> to <code>config.local.toml</code> or set environment variables (<code>OPENAI_API_KEY</code>, <code>GEMINI_API_KEY</code>, <code>COREBOX_API_KEY</code>). You can also set separate models for fast inline autocomplete and editing via <code>autocomplete_model</code> and <code>edit_model</code>.</p>
-
-    <h2>Testing without any model server</h2>
-    <p>Pass <code>--mock</code> to any CLI subcommand or daemon invocation to run with the deterministic offline mock provider. This is useful for verifying Accessibility permissions, shortcuts, and JSON-RPC behavior without waiting on a model.</p>
-<pre><code>cargo run -- --mock daemon --stdio</code></pre>
+    <section class="band" aria-labelledby="providers-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="providers-title">Switching to OpenAI, Gemini, or mock mode</h2>
+          <p>Copy <code>config.example.toml</code> to <code>config.local.toml</code> or set an API key environment variable.</p>
+        </div>
+        <div class="grid-2">
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Cloud BYOK models</span>
+            </div>
+            <div class="plate-body">
+              <p>Set <code>OPENAI_API_KEY</code>, <code>GEMINI_API_KEY</code>, or <code>COREBOX_API_KEY</code>. Configure <code>autocomplete_model</code> and <code>edit_model</code> independently.</p>
+            </div>
+          </div>
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Offline --mock mode</span>
+            </div>
+            <div class="plate-body">
+              <p>Pass <code>--mock</code> to test Accessibility permissions, hotkeys, and JSON-RPC output with zero model server running.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <a href="./">Back to overview</a> · <a href="grammar-and-layout-fixer.html">Grammar &amp; layout fixer</a>
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h3>AI Assistant for Writing</h3>
+        <p>MIT License. Built in Rust and Swift.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="system-wide-autocomplete.html">System-wide autocomplete</a></li>
+          <li><a href="grammar-and-layout-fixer.html">Grammar and layout fixer</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Internals</h3>
+        <ul>
+          <li><a href="architecture-and-benchmark.html">Architecture and memory</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Project</h3>
+        <ul>
+          <li><a href="https://github.com/copywriting-software/ai-assistant-for-writing">GitHub repository</a></li>
+          <li><a href="https://github.com/copywriting-software">copywriting-software</a></li>
+        </ul>
+      </div>
+    </div>
   </footer>
-</div>
 </body>
 </html>

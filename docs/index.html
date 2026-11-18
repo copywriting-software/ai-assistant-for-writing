@@ -10,6 +10,9 @@
   <meta property="og:title" content="AI Assistant for Writing on macOS">
   <meta property="og:description" content="System-wide ghost text autocomplete, grammar and keyboard layout fixes, and local Ollama support built in Rust and Swift.">
   <meta property="og:url" content="https://copywriting-software.github.io/ai-assistant-for-writing/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
   {
@@ -26,95 +29,348 @@
   </script>
 </head>
 <body>
-<div class="wrap">
   <header class="site-header">
-    <a class="brand" href="./">AI Assistant for Writing</a>
-    <nav class="top-nav" aria-label="Primary">
-      <a href="./" aria-current="page">Overview</a>
-      <a href="system-wide-autocomplete.html">Autocomplete</a>
-      <a href="local-ollama-writing-assistant.html">Local Ollama</a>
-      <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
-      <a href="architecture-and-benchmark.html">Architecture</a>
-    </nav>
+    <div class="container masthead">
+      <a class="brand" href="./">AI Assistant for Writing</a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="./" aria-current="page">Overview</a>
+        <a href="system-wide-autocomplete.html">Autocomplete</a>
+        <a href="local-ollama-writing-assistant.html">Local Ollama</a>
+        <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
+        <a href="architecture-and-benchmark.html">Architecture</a>
+        <a class="btn btn--primary btn--sm" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <h1>AI Assistant for Writing for macOS</h1>
-    <p>Most writing tools lock suggestions inside a single web editor or browser extension. This project runs as a background Rust daemon paired with a lightweight macOS Accessibility helper, so inline autocomplete, grammar fixes, and text rewriting work inside Notes, Mail, Slack, Telegram, Chrome, and TextEdit.</p>
+    <section class="band band--hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 id="hero-title">Write across macOS with inline AI.</h1>
+          <p class="lead">Ghost text autocomplete, grammar fixes, and local Ollama in one background daemon.</p>
+          <div class="cta-row">
+            <a class="btn btn--primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+            <a class="btn" href="local-ollama-writing-assistant.html">Run with Ollama</a>
+          </div>
+        </div>
 
-    <div class="cta-row">
-      <a class="btn btn-primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">View on GitHub</a>
-      <a class="btn btn-secondary" href="local-ollama-writing-assistant.html">Run offline with Ollama</a>
-    </div>
+        <div class="hero-stage">
+          <div class="plate" id="live-board">
+            <div class="plate-head">
+              <span class="plate-title">Live signal</span>
+              <div class="choice-set" role="group" aria-label="Mode preview">
+                <button type="button" class="choice-btn" data-mode="complete" aria-pressed="true">Autocomplete</button>
+                <button type="button" class="choice-btn" data-mode="layout" aria-pressed="false">Layout Fix</button>
+                <button type="button" class="choice-btn" data-mode="rewrite" aria-pressed="false">Rewrite</button>
+              </div>
+            </div>
+            <div class="plate-body">
+              <div class="board-row">
+                <span class="board-label">Target app</span>
+                <span class="board-value" id="mode-app">Notes / Mail / Slack</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Before cursor</span>
+                <span class="board-value" id="mode-input">Hi, wanted to follow up on<span class="ghost-inline" id="mode-ghost"> our meeting scheduled for tomorrow afternoon.</span></span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Action</span>
+                <span class="board-value" id="mode-action">Tab accepts full line. Option + Right accepts one word.</span>
+              </div>
+            </div>
+            <div class="plate-amber">
+              <div>
+                <strong id="mode-key">Tab / Esc</strong>
+                <div id="mode-note">Prefix-checked before insert</div>
+              </div>
+              <div class="figure" id="mode-latency">0 ms</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h2>What the assistant does</h2>
-    <div class="card-grid">
-      <article class="card">
-        <h3><a href="system-wide-autocomplete.html">System-wide ghost text</a></h3>
-        <p>Shows a floating completion next to your cursor. Accept the full line with <code>Tab</code>, one word with <code>Option + Right</code>, or dismiss with <code>Esc</code>.</p>
-      </article>
-      <article class="card">
-        <h3><a href="grammar-and-layout-fixer.html">Grammar and layout repair</a></h3>
-        <p>Press <code>Cmd + Shift + G</code> to fix spelling, punctuation, or text typed on the wrong EN/RU keyboard layout.</p>
-      </article>
-      <article class="card">
-        <h3><a href="grammar-and-layout-fixer.html#rewrite">Concise rewrite hotkey</a></h3>
-        <p>Press <code>Cmd + Shift + R</code> to shorten or clarify a selected paragraph in place without switching windows.</p>
-      </article>
-      <article class="card">
-        <h3><a href="local-ollama-writing-assistant.html">Local-first or BYOK API</a></h3>
-        <p>Works offline with local Ollama models like <code>qwen2.5:1.5b</code>, or connects to OpenAI-compatible, Gemini, and Corebox endpoints.</p>
-      </article>
-    </div>
+    <section class="band band--paper-2" aria-labelledby="platforms-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="platforms-title">Platforms and requirements</h2>
+          <p>Runs as a Rust daemon paired with a signed Swift Accessibility helper. No browser extension required.</p>
+        </div>
+        <div class="grid-4">
+          <article class="cell-plate">
+            <h3>Notes, Mail, Slack, Chrome</h3>
+            <p>Reads cursor bounds via AXUIElement in AppKit and Electron fields.</p>
+            <a href="system-wide-autocomplete.html">Autocomplete details</a>
+          </article>
+          <article class="cell-plate">
+            <h3>Ollama offline default</h3>
+            <p>Runs qwen2.5:1.5b locally, or connects to OpenAI, Gemini, and Corebox.</p>
+            <a href="local-ollama-writing-assistant.html">Ollama guide</a>
+          </article>
+          <article class="cell-plate">
+            <h3>EN and RU repair</h3>
+            <p>Fixes typos and wrong QWERTY layout strings before the edit prompt.</p>
+            <a href="grammar-and-layout-fixer.html">Grammar &amp; layout</a>
+          </article>
+          <article class="cell-plate">
+            <h3>PrivacyGuard and 0 ms cache</h3>
+            <p>Skips passwords, terminals, and keys. Learns accepted phrases locally.</p>
+            <a href="architecture-and-benchmark.html">Architecture</a>
+          </article>
+        </div>
+      </div>
+    </section>
 
-    <h2>Quick start on macOS</h2>
-    <p>You need Rust, Xcode command-line tools (<code>swiftc</code>), and Accessibility plus Input Monitoring permissions for the terminal running the daemon.</p>
-<pre><code>git clone https://github.com/copywriting-software/ai-assistant-for-writing.git
+    <section class="band band--ink" aria-labelledby="shortcuts-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="shortcuts-title">Shortcuts and response times</h2>
+          <p>Adaptive debounce fires faster after spaces and punctuation, while learned phrases resolve locally.</p>
+        </div>
+        <div class="board-table-wrap">
+          <table class="board-table">
+            <thead>
+              <tr>
+                <th>Shortcut</th>
+                <th>Action</th>
+                <th>Behavior</th>
+                <th>Target</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Tab</code></td>
+                <td>Accept full suggestion</td>
+                <td>Verifies prefix before insert</td>
+                <td class="num">0 ms</td>
+              </tr>
+              <tr>
+                <td><code>Option + Right</code></td>
+                <td>Accept next word</td>
+                <td>Grapheme-aware word split</td>
+                <td class="num">0 ms</td>
+              </tr>
+              <tr>
+                <td><code>Esc</code></td>
+                <td>Dismiss suggestion</td>
+                <td>Pauses until next space</td>
+                <td class="num">0 ms</td>
+              </tr>
+              <tr>
+                <td><code>Cmd + Shift + G</code></td>
+                <td>Fix grammar and layout</td>
+                <td>Repairs EN/RU before LLM</td>
+                <td><span class="tag-amber">Non-blocking</span></td>
+              </tr>
+              <tr>
+                <td><code>Cmd + Shift + R</code></td>
+                <td>Rewrite concise</td>
+                <td>Preserves facts and numbers</td>
+                <td><span class="tag-amber">Cancellable</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="compare-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="compare-title">Before and after</h2>
+          <p>Deterministic layout repair runs before the model sees your text. <a href="grammar-and-layout-fixer.html#rewrite">See rewrite styles</a>.</p>
+        </div>
+        <div class="grid-2">
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Input: wrong keyboard layout</span>
+            </div>
+            <div class="plate-body">
+              <pre><code>cargo run -- fix "ghbdtn rfr ltkf"</code></pre>
+              <p>ASCII characters typed on an English QWERTY layout while intending Russian.</p>
+            </div>
+            <div class="plate-amber">
+              <div>
+                <strong>encoding.rs</strong>
+                <div>Local pre-pass</div>
+              </div>
+              <div class="figure">0 ms</div>
+            </div>
+          </div>
+          <div class="plate plate--ink">
+            <div class="plate-head">
+              <span class="plate-title">Output: repaired text</span>
+            </div>
+            <div class="plate-body">
+              <pre><code>Привет, как дела?</code></pre>
+              <p>Converted deterministically, then punctuated by the edit model.</p>
+            </div>
+            <div class="plate-amber">
+              <div>
+                <strong>Cmd + Shift + G</strong>
+                <div>In-place replace</div>
+              </div>
+              <div class="figure">15 ms</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--paper-2" aria-labelledby="setup-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="setup-title">Quick start and privacy rules</h2>
+          <p>Grant Accessibility and Input Monitoring permissions to your terminal, then build and start the daemon.</p>
+        </div>
+        <div class="grid-2">
+          <pre><code>git clone https://github.com/copywriting-software/ai-assistant-for-writing.git
 cd ai-assistant-for-writing
-
 cargo test
 ./macos/build.sh
-
-# Option A: local free model via Ollama
 ollama pull qwen2.5:1.5b
-cargo run -- check
-
-# Option B: cloud provider via API key
-export OPENAI_API_KEY="sk-..."
-cargo run -- check
-
-# Start the background writing daemon
 cargo run --release -- daemon</code></pre>
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Blocked by PrivacyGuard</span>
+            </div>
+            <div class="plate-body">
+              <div class="board-row">
+                <span class="board-label">Fields</span>
+                <span class="board-value">AXSecureTextField</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Password managers</span>
+                <span class="board-value">1Password, Bitwarden, KeePassXC, Keychain</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Terminals</span>
+                <span class="board-value">Terminal, iTerm2, Warp, Alacritty, Kitty</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Patterns</span>
+                <span class="board-value">API key prefixes and 16-digit card numbers</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h2>Keyboard shortcuts</h2>
-    <table>
-      <thead>
-        <tr><th>Shortcut</th><th>Action</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><code>Tab</code></td><td>Accept the full ghost text suggestion</td></tr>
-        <tr><td><code>Option + Right</code></td><td>Accept the next word only</td></tr>
-        <tr><td><code>Esc</code></td><td>Dismiss the suggestion and pause re-triggering on that word</td></tr>
-        <tr><td><code>Cmd + Shift + G</code></td><td>Fix grammar, punctuation, and wrong EN/RU keyboard layout</td></tr>
-        <tr><td><code>Cmd + Shift + R</code></td><td>Rewrite selected text in concise style</td></tr>
-      </tbody>
-    </table>
-
-    <h2>Privacy rules built into the core</h2>
-    <p>Every request passes through <code>PrivacyGuard</code> before any prompt leaves your machine or touches local memory. The assistant skips password fields (<code>AXSecureTextField</code>), password managers (1Password, Bitwarden, KeePassXC, Keychain Access), terminal emulators (Terminal, iTerm2, Warp, Alacritty, Kitty), and text matching API key prefixes or 16-digit card numbers.</p>
-
-    <h2>Documentation by topic</h2>
-    <ul>
-      <li><a href="system-wide-autocomplete.html">System-wide ghost text autocomplete on macOS</a>: how Accessibility snapshots, cursor positioning, and word-by-word acceptance work.</li>
-      <li><a href="local-ollama-writing-assistant.html">Private AI writing with Ollama</a>: running offline copywriting and editing models with zero cloud calls.</li>
-      <li><a href="grammar-and-layout-fixer.html">Grammar checker, rewrite, and EN/RU layout fixer</a>: instant local layout repair and LLM proofreading.</li>
-      <li><a href="architecture-and-benchmark.html">Rust and Swift architecture</a>: adaptive debounce, sliding-window prefix cache, and local phrase memory.</li>
-    </ul>
+    <section class="band band--ink" aria-labelledby="close-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h2 id="close-title">Start writing locally.</h2>
+          <p class="lead">Inspect hit rates, latency, and learned phrases anytime with the built-in stats command.</p>
+          <div class="cta-row">
+            <a class="btn btn--primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">View source on GitHub</a>
+            <a class="btn btn--on-ink" href="architecture-and-benchmark.html">Read architecture</a>
+          </div>
+        </div>
+        <div class="hero-stage">
+          <pre><code>$ cargo run -- stats
+Total requests:   42
+Cache hits:       14
+Fast-path hits:   9
+Avg LLM latency:  185 ms
+Accepted / Esc:   31 (24 full, 7 word) / 4
+Learned phrases:  12</code></pre>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
-    MIT License. Maintained by <a href="https://github.com/copywriting-software">copywriting-software</a>.
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h3>AI Assistant for Writing</h3>
+        <p>MIT License. Built in Rust and Swift.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="system-wide-autocomplete.html">System-wide autocomplete</a></li>
+          <li><a href="local-ollama-writing-assistant.html">Local Ollama setup</a></li>
+          <li><a href="grammar-and-layout-fixer.html">Grammar and layout fixer</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Internals</h3>
+        <ul>
+          <li><a href="architecture-and-benchmark.html">Architecture and memory</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Project</h3>
+        <ul>
+          <li><a href="https://github.com/copywriting-software/ai-assistant-for-writing">GitHub repository</a></li>
+          <li><a href="https://github.com/copywriting-software">copywriting-software</a></li>
+        </ul>
+      </div>
+    </div>
   </footer>
-</div>
+
+  <script>
+    (function () {
+      const modes = {
+        complete: {
+          app: "Notes / Mail / Slack",
+          input: "Hi, wanted to follow up on",
+          ghost: " our meeting scheduled for tomorrow afternoon.",
+          action: "Tab accepts full line. Option + Right accepts one word.",
+          key: "Tab / Esc",
+          note: "Prefix-checked before insert",
+          latency: "0 ms"
+        },
+        layout: {
+          app: "Telegram / Chrome",
+          input: "ghbdtn rfr ltkf -> ",
+          ghost: "Привет, как дела?",
+          action: "Cmd + Shift + G converts EN/RU layout and fixes punctuation.",
+          key: "Cmd + Shift + G",
+          note: "Deterministic pre-repair in encoding.rs",
+          latency: "15 ms"
+        },
+        rewrite: {
+          app: "Mail / TextEdit",
+          input: "Need to call tomorrow to go over all details -> ",
+          ghost: "Let's call tomorrow to review the details.",
+          action: "Cmd + Shift + R rewrites selected text concisely.",
+          key: "Cmd + Shift + R",
+          note: "Non-blocking, cancellable via Esc",
+          latency: "Async"
+        }
+      };
+
+      const buttons = document.querySelectorAll(".choice-btn[data-mode]");
+      const elApp = document.getElementById("mode-app");
+      const elInput = document.getElementById("mode-input");
+      const elAction = document.getElementById("mode-action");
+      const elKey = document.getElementById("mode-key");
+      const elNote = document.getElementById("mode-note");
+      const elLatency = document.getElementById("mode-latency");
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const m = modes[btn.dataset.mode];
+          if (!m) return;
+          buttons.forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+          btn.setAttribute("aria-pressed", "true");
+          elApp.textContent = m.app;
+          elInput.textContent = m.input;
+          const span = document.createElement("span");
+          span.className = "ghost-inline";
+          span.textContent = m.ghost;
+          elInput.appendChild(span);
+          elAction.textContent = m.action;
+          elKey.textContent = m.key;
+          elNote.textContent = m.note;
+          elLatency.textContent = m.latency;
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

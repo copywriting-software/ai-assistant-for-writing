@@ -6,6 +6,9 @@
   <title>System-Wide Ghost Text Autocomplete for macOS Apps</title>
   <meta name="description" content="How system-wide inline autocomplete works across Notes, Mail, Slack, Telegram, and Chrome on macOS using Accessibility APIs and a floating NSPanel.">
   <link rel="canonical" href="https://copywriting-software.github.io/ai-assistant-for-writing/system-wide-autocomplete.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
   {
@@ -17,45 +20,143 @@
   </script>
 </head>
 <body>
-<div class="wrap">
   <header class="site-header">
-    <a class="brand" href="./">AI Assistant for Writing</a>
-    <nav class="top-nav" aria-label="Primary">
-      <a href="./">Overview</a>
-      <a href="system-wide-autocomplete.html" aria-current="page">Autocomplete</a>
-      <a href="local-ollama-writing-assistant.html">Local Ollama</a>
-      <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
-      <a href="architecture-and-benchmark.html">Architecture</a>
-    </nav>
+    <div class="container masthead">
+      <a class="brand" href="./">AI Assistant for Writing</a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="./">Overview</a>
+        <a href="system-wide-autocomplete.html" aria-current="page">Autocomplete</a>
+        <a href="local-ollama-writing-assistant.html">Local Ollama</a>
+        <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
+        <a href="architecture-and-benchmark.html">Architecture</a>
+        <a class="btn btn--primary btn--sm" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <h1>System-wide ghost text autocomplete on macOS</h1>
-    <p>Code editors have had inline ghost text for years, while email clients, messengers, and note apps still rely on basic OS spellcheck. This tool brings inline completions to standard macOS text fields using the system Accessibility API and a non-activating floating panel.</p>
+    <section class="band band--hero" aria-labelledby="page-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 id="page-title">System-wide ghost text autocomplete on macOS</h1>
+          <p class="lead">Inline completions in Notes, Mail, Slack, Telegram, and Chrome without browser extensions.</p>
+          <div class="cta-row">
+            <a class="btn btn--primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+            <a class="btn" href="architecture-and-benchmark.html">Read architecture</a>
+          </div>
+        </div>
+        <div class="hero-stage">
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Snapshot payload</span>
+            </div>
+            <div class="plate-body">
+              <div class="board-row">
+                <span class="board-label">Settle delay</span>
+                <span class="board-value">15 ms after keystroke</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Before cursor</span>
+                <span class="board-value">Last 1,000 chars</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">After cursor</span>
+                <span class="board-value">Next 200 chars (FIM)</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Window context</span>
+                <span class="board-value">app_name + window_title</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h2>How cursor context is captured</h2>
-    <p>When you type in a supported app, <code>MacHelper.swift</code> waits 15 milliseconds for the target app to commit the character, then reads the focused element via <code>AXUIElement</code>. Instead of sending an entire document over IPC, it trims the payload in Swift to the last 1,000 characters before the cursor and up to 200 characters after the cursor, along with the active window title.</p>
-    <p>Navigation keys such as arrow keys, <code>Home</code>, <code>End</code>, <code>PageUp</code>, <code>PageDown</code>, <code>Tab</code>, and <code>Esc</code> are filtered out at the <code>CGEventTap</code> level so moving around a document does not trigger wasted reads.</p>
+    <section class="band band--paper-2" aria-labelledby="capture-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="capture-title">How cursor context is captured</h2>
+          <p><code>MacHelper.swift</code> reads the focused element through <code>AXUIElement</code> and filters out navigation keys at the <code>CGEventTap</code> level.</p>
+        </div>
+        <div class="grid-2">
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Filtered keys (no AX read)</span>
+            </div>
+            <div class="plate-body">
+              <p>Arrow keys, <code>Home</code>, <code>End</code>, <code>PageUp</code>, <code>PageDown</code>, <code>Tab</code>, and <code>Esc</code> never trigger snapshot reads or reset timers.</p>
+            </div>
+          </div>
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Three prompt signals</span>
+            </div>
+            <div class="plate-body">
+              <p>Text before cursor (600 chars), text after cursor (200 chars) so the model does not repeat existing words, and window title for tone.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h2>Context-aware completions (FIM)</h2>
-    <p>The Rust engine builds a short prompt containing three signals when available:</p>
-    <ul>
-      <li>Text before the cursor, trimmed to <code>max_context_chars</code> (600 by default).</li>
-      <li>Text after the cursor, so the model avoids repeating words you already wrote.</li>
-      <li>Active application name and window title, helping match tone between a chat message and a formal email.</li>
-    </ul>
-
-    <h2>Safe insertion without overwriting newer typing</h2>
-    <p>Before inserting accepted text, the macOS helper checks that the text right before the cursor still matches the prefix used to generate the suggestion. If you kept typing while a request was in flight, the stale insertion is aborted rather than corrupting your sentence.</p>
-    <p>In native AppKit apps (Notes, TextEdit, Mail), text is inserted directly through <code>kAXSelectedTextAttribute</code>. In Electron and Chromium apps (Slack, Chrome, Telegram), the helper falls back to a clipboard paste and restores your previous clipboard contents after 150 milliseconds.</p>
-
-    <h2>Partial acceptance and dismissal</h2>
-    <p>If only the start of a suggestion fits what you want to say, press <code>Option + Right</code> to accept one grapheme-aware word at a time. Pressing <code>Esc</code> cancels any in-flight HTTP request and pauses autocomplete until you type a space or start a new word.</p>
+    <section class="band band--ink" aria-labelledby="insert-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="insert-title">Safe insertion and partial accept</h2>
+          <p>Before inserting text, the helper verifies that the prefix before the cursor still matches the request.</p>
+        </div>
+        <div class="grid-2">
+          <div class="plate plate--ink">
+            <div class="plate-head" style="background: var(--color-ink-2); color: var(--color-paper); border-color: var(--color-ink-rule);">
+              <span class="plate-title">Native vs Electron</span>
+            </div>
+            <div class="plate-body">
+              <p>Notes, TextEdit, and Mail insert directly via <code>kAXSelectedTextAttribute</code>. Slack, Chrome, and Telegram paste via clipboard and restore it after 150 ms.</p>
+            </div>
+          </div>
+          <div class="plate plate--ink">
+            <div class="plate-head" style="background: var(--color-ink-2); color: var(--color-paper); border-color: var(--color-ink-rule);">
+              <span class="plate-title">Word-by-word and Esc</span>
+            </div>
+            <div class="plate-body">
+              <p>Press <code>Option + Right</code> to accept one grapheme-aware word at a time. Press <code>Esc</code> to cancel in-flight requests and pause until the next space.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <a href="./">Back to overview</a> · <a href="architecture-and-benchmark.html">Read architecture details</a>
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h3>AI Assistant for Writing</h3>
+        <p>MIT License. Built in Rust and Swift.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="local-ollama-writing-assistant.html">Local Ollama setup</a></li>
+          <li><a href="grammar-and-layout-fixer.html">Grammar and layout fixer</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Internals</h3>
+        <ul>
+          <li><a href="architecture-and-benchmark.html">Architecture and memory</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Project</h3>
+        <ul>
+          <li><a href="https://github.com/copywriting-software/ai-assistant-for-writing">GitHub repository</a></li>
+          <li><a href="https://github.com/copywriting-software">copywriting-software</a></li>
+        </ul>
+      </div>
+    </div>
   </footer>
-</div>
 </body>
 </html>

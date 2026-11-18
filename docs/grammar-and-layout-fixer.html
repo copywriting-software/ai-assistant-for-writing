@@ -6,6 +6,9 @@
   <title>Grammar Checker, Rewrite Hotkey, and EN/RU Keyboard Layout Fixer</title>
   <meta name="description" content="Fix grammar, spelling, and wrong EN/RU keyboard layout text (ghbdtn to привет) with a global macOS shortcut, or rewrite selected text concisely.">
   <link rel="canonical" href="https://copywriting-software.github.io/ai-assistant-for-writing/grammar-and-layout-fixer.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
   {
@@ -17,42 +20,98 @@
   </script>
 </head>
 <body>
-<div class="wrap">
   <header class="site-header">
-    <a class="brand" href="./">AI Assistant for Writing</a>
-    <nav class="top-nav" aria-label="Primary">
-      <a href="./">Overview</a>
-      <a href="system-wide-autocomplete.html">Autocomplete</a>
-      <a href="local-ollama-writing-assistant.html">Local Ollama</a>
-      <a href="grammar-and-layout-fixer.html" aria-current="page">Grammar &amp; Layout</a>
-      <a href="architecture-and-benchmark.html">Architecture</a>
-    </nav>
+    <div class="container masthead">
+      <a class="brand" href="./">AI Assistant for Writing</a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="./">Overview</a>
+        <a href="system-wide-autocomplete.html">Autocomplete</a>
+        <a href="local-ollama-writing-assistant.html">Local Ollama</a>
+        <a href="grammar-and-layout-fixer.html" aria-current="page">Grammar &amp; Layout</a>
+        <a href="architecture-and-benchmark.html">Architecture</a>
+        <a class="btn btn--primary btn--sm" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <h1>Grammar, rewrite, and keyboard layout fixer</h1>
-    <p>Typing a full sentence on the wrong keyboard layout or sending a rushed message with typos happens often when switching between languages. Two global shortcuts handle cleanup in place without leaving the active window.</p>
+    <section class="band band--hero" aria-labelledby="page-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 id="page-title">Grammar, rewrite, and keyboard layout fixer</h1>
+          <p class="lead">Repair wrong EN/RU QWERTY input and rewrite selected paragraphs in place with two global shortcuts.</p>
+          <div class="cta-row">
+            <a class="btn btn--primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+            <a class="btn" href="local-ollama-writing-assistant.html">Local Ollama setup</a>
+          </div>
+        </div>
+        <div class="hero-stage">
+          <pre><code>$ cargo run -- layout "Ghbdtn? rfr ltkf&amp;"
+Привет, как дела?
 
-    <h2>Instant EN/RU keyboard layout repair</h2>
-    <p>The <code>encoding.rs</code> module detects when ASCII characters form Russian words typed on a QWERTY layout (for example, <code>ghbdtn rfr ltkf</code>) and converts them deterministically to Cyrillic (<code>привет как дела</code>) before sending the text to the proofreading prompt. That way, the model sees readable words and can add punctuation and capitalization accurately.</p>
-    <p>You can also convert text locally from the command line without calling any AI model:</p>
-<pre><code>cargo run -- layout "Ghbdtn? rfr ltkf&amp;"
-# Output: Привет, как дела?
+$ cargo run -- layout "руддщ цщкдв"
+hello world</code></pre>
+        </div>
+      </div>
+    </section>
 
-cargo run -- layout "руддщ цщкдв"
-# Output: hello world</code></pre>
-
-    <h2>One-hotkey proofreading (Cmd + Shift + G)</h2>
-    <p>Select a sentence or paragraph and press <code>Cmd + Shift + G</code>. If nothing is selected, the assistant uses the text before the cursor. The edit request runs asynchronously in the Rust daemon, so you can press <code>Esc</code> to cancel if you change your mind while the model is working.</p>
-
-    <h2 id="rewrite">Rewrite selected text (Cmd + Shift + R)</h2>
-    <p>Select text and press <code>Cmd + Shift + R</code> to rewrite it concisely while keeping facts, numbers, and names intact. From the CLI, four rewrite styles are available: <code>concise</code>, <code>professional</code>, <code>friendly</code>, and <code>clear</code>.</p>
-<pre><code>cargo run -- rewrite "Need to call tomorrow to discuss all project details" --style professional</code></pre>
+    <section class="band band--paper-2" aria-labelledby="layout-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="layout-title">Deterministic EN/RU layout repair</h2>
+          <p><code>encoding.rs</code> detects ASCII text typed on an English QWERTY layout as Russian and converts it before sending it to the proofreading prompt.</p>
+        </div>
+        <div class="grid-2">
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Cmd + Shift + G</span>
+            </div>
+            <div class="plate-body">
+              <p>Fixes spelling, punctuation, and broken keyboard layout on the selected text or the text before the cursor. Press <code>Esc</code> to cancel while in flight.</p>
+            </div>
+          </div>
+          <div class="plate" id="rewrite">
+            <div class="plate-head">
+              <span class="plate-title">Cmd + Shift + R</span>
+            </div>
+            <div class="plate-body">
+              <p>Rewrites selected text concisely while preserving numbers, names, and facts. CLI supports <code>concise</code>, <code>professional</code>, <code>friendly</code>, and <code>clear</code>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <a href="./">Back to overview</a> · <a href="local-ollama-writing-assistant.html">Local Ollama setup</a>
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h3>AI Assistant for Writing</h3>
+        <p>MIT License. Built in Rust and Swift.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="system-wide-autocomplete.html">System-wide autocomplete</a></li>
+          <li><a href="local-ollama-writing-assistant.html">Local Ollama setup</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Internals</h3>
+        <ul>
+          <li><a href="architecture-and-benchmark.html">Architecture and memory</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Project</h3>
+        <ul>
+          <li><a href="https://github.com/copywriting-software/ai-assistant-for-writing">GitHub repository</a></li>
+          <li><a href="https://github.com/copywriting-software">copywriting-software</a></li>
+        </ul>
+      </div>
+    </div>
   </footer>
-</div>
 </body>
 </html>

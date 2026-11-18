@@ -6,6 +6,9 @@
   <title>Architecture, Latency Design, and Local Phrase Memory</title>
   <meta name="description" content="Inside the Rust and Swift architecture: adaptive debounce, sliding-window prefix cache, non-blocking edits, and local phrase memory for 0ms completions.">
   <link rel="canonical" href="https://copywriting-software.github.io/ai-assistant-for-writing/architecture-and-benchmark.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
   {
@@ -17,42 +20,128 @@
   </script>
 </head>
 <body>
-<div class="wrap">
   <header class="site-header">
-    <a class="brand" href="./">AI Assistant for Writing</a>
-    <nav class="top-nav" aria-label="Primary">
-      <a href="./">Overview</a>
-      <a href="system-wide-autocomplete.html">Autocomplete</a>
-      <a href="local-ollama-writing-assistant.html">Local Ollama</a>
-      <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
-      <a href="architecture-and-benchmark.html" aria-current="page">Architecture</a>
-    </nav>
+    <div class="container masthead">
+      <a class="brand" href="./">AI Assistant for Writing</a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="./">Overview</a>
+        <a href="system-wide-autocomplete.html">Autocomplete</a>
+        <a href="local-ollama-writing-assistant.html">Local Ollama</a>
+        <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
+        <a href="architecture-and-benchmark.html" aria-current="page">Architecture</a>
+        <a class="btn btn--primary btn--sm" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <h1>Architecture, latency design, and local memory</h1>
-    <p>System-wide writing tools feel sluggish when UI helpers and backend daemons duplicate timers or block on network calls. Here is how the Rust core and Swift helper divide responsibilities.</p>
+    <section class="band band--hero" aria-labelledby="page-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 id="page-title">Architecture, latency design, and local memory</h1>
+          <p class="lead">One state owner in Rust, a thin Swift I/O bridge, and local phrase memory for 0 ms hits.</p>
+          <div class="cta-row">
+            <a class="btn btn--primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+            <a class="btn" href="system-wide-autocomplete.html">Autocomplete details</a>
+          </div>
+        </div>
+        <div class="hero-stage">
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Module responsibilities</span>
+            </div>
+            <div class="plate-body">
+              <div class="board-row">
+                <span class="board-label">macos/MacHelper.swift</span>
+                <span class="board-value">CGEventTap + AXUIElement + GhostPanel</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">src/session.rs</span>
+                <span class="board-value">Revisions, adaptive debounce, Esc pause</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">src/engine.rs</span>
+                <span class="board-value">Sliding-window PrefixCache + FIM prompt</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">src/memory.rs</span>
+                <span class="board-value">Fast-path phrases and latency stats</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h2>Two-process boundary</h2>
-    <ul>
-      <li><code>macos/MacHelper.swift</code> handles <code>CGEventTap</code> key capture, <code>AXUIElement</code> snapshot reads, and the floating <code>GhostPanel</code>. It holds no completion state of its own and trims text before serializing JSON.</li>
-      <li><code>src/session.rs</code> owns revision numbers, adaptive debounce timers, cancellation tokens, and <code>ShowThinking</code> / <code>ShowGhost</code> / <code>HideGhost</code> commands.</li>
-      <li><code>src/platform/mod.rs</code> spawns grammar and rewrite tasks concurrently so long-running edits never stall keystroke handling or <code>Esc</code> cancellation.</li>
-    </ul>
+    <section class="band band--paper-2" aria-labelledby="latency-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="latency-title">Adaptive debounce and sliding-window cache</h2>
+          <p>Boundaries trigger faster while mid-word pauses wait for the full configured delay.</p>
+        </div>
+        <div class="grid-2">
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Adaptive debounce</span>
+            </div>
+            <div class="plate-body">
+              <p>At spaces and punctuation, <code>adaptive_debounce_ms</code> shortens wait time to 70% of <code>debounce_ms</code> (80 ms floor). Mid-word typing keeps the full delay.</p>
+            </div>
+          </div>
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Sliding-window PrefixCache</span>
+            </div>
+            <div class="plate-body">
+              <p>When text exceeds <code>max_context_chars</code> (600 chars), <code>PrefixCache</code> matches shifted suffix windows so typed continuations still resolve locally.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h2>Adaptive debounce and sliding-window cache</h2>
-    <p>When you stop at a word boundary or punctuation mark, <code>adaptive_debounce_ms</code> shortens the wait to 70% of <code>debounce_ms</code> (down to 80 ms) so suggestions appear sooner. Mid-word pauses keep the full configured delay to avoid distracting popups while typing.</p>
-    <p>As documents grow past <code>max_context_chars</code> (600 characters), the context window shifts left. <code>PrefixCache</code> matches both direct prefix extensions and shifted suffix windows, serving remaining suggestion characters locally without another model call.</p>
-
-    <h2>Local phrase memory and stats</h2>
-    <p><code>MemoryStore</code> persists accepted completions and request latency to a local JSON file (only after <code>PrivacyGuard</code> approves the context). Once you accept a completion for the same trailing context twice, future appearances are served locally in under 1 millisecond via <code>fast_path_match</code>.</p>
-    <p>Inspect accumulated hit rates, average LLM latency, and per-app acceptance counts from the terminal:</p>
-<pre><code>cargo run -- stats</code></pre>
+    <section class="band band--ink" aria-labelledby="memory-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h2 id="memory-title">Local phrase memory</h2>
+          <p class="lead"><code>MemoryStore</code> writes accepted completions and latency metrics to local JSON after <code>PrivacyGuard</code> approves the context.</p>
+        </div>
+        <div class="hero-stage">
+          <pre><code>cargo run -- stats</code></pre>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <a href="./">Back to overview</a> · <a href="system-wide-autocomplete.html">System-wide autocomplete</a>
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h3>AI Assistant for Writing</h3>
+        <p>MIT License. Built in Rust and Swift.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="system-wide-autocomplete.html">System-wide autocomplete</a></li>
+          <li><a href="local-ollama-writing-assistant.html">Local Ollama setup</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Internals</h3>
+        <ul>
+          <li><a href="grammar-and-layout-fixer.html">Grammar and layout fixer</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Project</h3>
+        <ul>
+          <li><a href="https://github.com/copywriting-software/ai-assistant-for-writing">GitHub repository</a></li>
+          <li><a href="https://github.com/copywriting-software">copywriting-software</a></li>
+        </ul>
+      </div>
+    </div>
   </footer>
-</div>
 </body>
 </html>
