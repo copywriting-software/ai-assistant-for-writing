@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Complete config.toml and Environment Variables Reference</title>
+  <meta name="description" content="All configuration options for provider, behavior, debounce, cache size, and PrivacyGuard in ai-assistant-for-writing.">
+  <link rel="canonical" href="https://copywriting-software.github.io/ai-assistant-for-writing/config-toml-reference.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Complete config.toml and Environment Variables Reference">
+  <meta property="og:description" content="All configuration options for provider, behavior, debounce, cache size, and PrivacyGuard in ai-assistant-for-writing.">
+  <meta property="og:url" content="https://copywriting-software.github.io/ai-assistant-for-writing/config-toml-reference.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Complete config.toml and Environment Variables Reference",
+    "url": "https://copywriting-software.github.io/ai-assistant-for-writing/config-toml-reference.html"
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container masthead">
+      <a class="brand" href="./">AI Assistant for Writing</a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="./">Overview</a>
+        <a href="system-wide-autocomplete.html">Autocomplete</a>
+        <a href="local-ollama-writing-assistant.html">Local Ollama</a>
+        <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
+        <a href="guides.html">All 30 Guides</a>
+        <a class="btn btn--primary btn--sm" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="band band--hero" aria-labelledby="page-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 id="page-title">Configuration and environment reference</h1>
+          <p class="lead">Every setting in config.local.toml, ~/.config/ai-assistant-for-writing/config.toml, and environment overrides.</p>
+          <div class="cta-row">
+            <a class="btn btn--primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+            <a class="btn" href="guides.html">All 30 guides</a>
+          </div>
+        </div>
+        <div class="hero-stage">
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Reference</span>
+            </div>
+            <div class="plate-body">
+              <div class="board-row">
+                <span class="board-label">Config lookup</span>
+                <span class="board-value">--config, ./config.local.toml, ~/.config/...</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">debounce_ms</span>
+                <span class="board-value">350 (adaptive 70% at word boundaries)</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">cache_size</span>
+                <span class="board-value">128 entries</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">min_prefix_chars</span>
+                <span class="board-value">4 characters</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--paper-2">
+      <div class="container">
+        <div class="section-head">
+          <h2>Behavior and privacy keys</h2>
+          <p>Control debounce_ms, max_completion_tokens, max_context_chars, cache_size, and blocked_apps in TOML. Environment variables like COREBOX_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, OLLAMA_URL, AI_WRITING_MODEL, and AI_WRITING_PROVIDER override file values.</p>
+        </div>
+        <pre><code>cp config.example.toml config.local.toml
+cargo run -- check</code></pre>
+
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="container">
+        <div class="section-head">
+          <h2>Checking active configuration</h2>
+          <p>Run cargo run -- check to print the resolved provider kind, base URL, autocomplete model, edit model, and macOS helper status.</p>
+        </div>
+        <div class="prose-stack"><ul>
+            <li><a href="cli-writing-commands.html">CLI commands reference</a></li>
+            <li><a href="privacy-guard-blocked-apps.html">PrivacyGuard blocked apps</a></li>
+          </ul></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h3>AI Assistant for Writing</h3>
+        <p>MIT License. Built in Rust and Swift.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="guides.html">All 30 guides</a></li>
+          <li><a href="system-wide-autocomplete.html">System-wide autocomplete</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Internals</h3>
+        <ul>
+          <li><a href="architecture-and-benchmark.html">Architecture and memory</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Project</h3>
+        <ul>
+          <li><a href="https://github.com/copywriting-software/ai-assistant-for-writing">GitHub repository</a></li>
+          <li><a href="https://github.com/copywriting-software">copywriting-software</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

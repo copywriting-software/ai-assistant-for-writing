@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proofreading and Rewrite in macOS TextEdit</title>
+  <meta name="description" content="Proofread drafts, fix grammar, and rewrite paragraphs concisely inside macOS TextEdit.">
+  <link rel="canonical" href="https://copywriting-software.github.io/ai-assistant-for-writing/textedit-ai-proofreading.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Proofreading and Rewrite in macOS TextEdit">
+  <meta property="og:description" content="Proofread drafts, fix grammar, and rewrite paragraphs concisely inside macOS TextEdit.">
+  <meta property="og:url" content="https://copywriting-software.github.io/ai-assistant-for-writing/textedit-ai-proofreading.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Proofreading and Rewrite in macOS TextEdit",
+    "url": "https://copywriting-software.github.io/ai-assistant-for-writing/textedit-ai-proofreading.html"
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container masthead">
+      <a class="brand" href="./">AI Assistant for Writing</a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="./">Overview</a>
+        <a href="system-wide-autocomplete.html">Autocomplete</a>
+        <a href="local-ollama-writing-assistant.html">Local Ollama</a>
+        <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
+        <a href="guides.html">All 30 Guides</a>
+        <a class="btn btn--primary btn--sm" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="band band--hero" aria-labelledby="page-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 id="page-title">Proofreading and rewrite in macOS TextEdit</h1>
+          <p class="lead">Draft plain or rich text in TextEdit with inline completions and one-shortcut proofreading.</p>
+          <div class="cta-row">
+            <a class="btn btn--primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+            <a class="btn" href="guides.html">All 30 guides</a>
+          </div>
+        </div>
+        <div class="hero-stage">
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Reference</span>
+            </div>
+            <div class="plate-body">
+              <div class="board-row">
+                <span class="board-label">App name</span>
+                <span class="board-value">TextEdit</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Insertion method</span>
+                <span class="board-value">kAXSelectedTextAttribute</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Proofreading</span>
+                <span class="board-value">Cmd + Shift + G</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Concise rewrite</span>
+                <span class="board-value">Cmd + Shift + R</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--paper-2">
+      <div class="container">
+        <div class="section-head">
+          <h2>Clean drafts without leaving TextEdit</h2>
+          <p>TextEdit supports direct Accessibility reads and writes. Both full-line Tab completions and selection-based rewrites apply cleanly at the cursor.</p>
+        </div>
+        <pre><code>cargo run -- rewrite &quot;Draft paragraph here&quot; --style clear</code></pre>
+
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="container">
+        <div class="section-head">
+          <h2>Long document caching</h2>
+          <p>Even when a TextEdit document grows beyond 600 characters, PrefixCache matches shifted suffix windows so typing along a suggestion does not trigger extra model calls.</p>
+        </div>
+        <div class="prose-stack"><ul>
+            <li><a href="sliding-window-prefix-cache.html">Sliding-window PrefixCache</a></li>
+            <li><a href="concise-professional-rewrite-styles.html">Rewrite styles reference</a></li>
+          </ul></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h3>AI Assistant for Writing</h3>
+        <p>MIT License. Built in Rust and Swift.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="guides.html">All 30 guides</a></li>
+          <li><a href="system-wide-autocomplete.html">System-wide autocomplete</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Internals</h3>
+        <ul>
+          <li><a href="architecture-and-benchmark.html">Architecture and memory</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Project</h3>
+        <ul>
+          <li><a href="https://github.com/copywriting-software/ai-assistant-for-writing">GitHub repository</a></li>
+          <li><a href="https://github.com/copywriting-software">copywriting-software</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

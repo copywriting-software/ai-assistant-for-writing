@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Writing Assistant for Apple Mail on macOS</title>
+  <meta name="description" content="Draft replies, fix grammar, and tighten paragraphs in Apple Mail with a local-first Rust and Swift assistant.">
+  <link rel="canonical" href="https://copywriting-software.github.io/ai-assistant-for-writing/macos-mail-ai-writing-assistant.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="AI Writing Assistant for Apple Mail on macOS">
+  <meta property="og:description" content="Draft replies, fix grammar, and tighten paragraphs in Apple Mail with a local-first Rust and Swift assistant.">
+  <meta property="og:url" content="https://copywriting-software.github.io/ai-assistant-for-writing/macos-mail-ai-writing-assistant.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "AI Writing Assistant for Apple Mail on macOS",
+    "url": "https://copywriting-software.github.io/ai-assistant-for-writing/macos-mail-ai-writing-assistant.html"
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container masthead">
+      <a class="brand" href="./">AI Assistant for Writing</a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="./">Overview</a>
+        <a href="system-wide-autocomplete.html">Autocomplete</a>
+        <a href="local-ollama-writing-assistant.html">Local Ollama</a>
+        <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
+        <a href="guides.html">All 30 Guides</a>
+        <a class="btn btn--primary btn--sm" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="band band--hero" aria-labelledby="page-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 id="page-title">AI writing assistant for Apple Mail</h1>
+          <p class="lead">Draft replies, repair typos, and tighten long emails in place without copying text into a browser tab.</p>
+          <div class="cta-row">
+            <a class="btn btn--primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+            <a class="btn" href="guides.html">All 30 guides</a>
+          </div>
+        </div>
+        <div class="hero-stage">
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Reference</span>
+            </div>
+            <div class="plate-body">
+              <div class="board-row">
+                <span class="board-label">App name</span>
+                <span class="board-value">Mail</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Insertion method</span>
+                <span class="board-value">kAXSelectedTextAttribute</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Tone adaptation</span>
+                <span class="board-value">Learns accepted phrases per app</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Rewrite hotkey</span>
+                <span class="board-value">Cmd + Shift + R</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--paper-2">
+      <div class="container">
+        <div class="section-head">
+          <h2>App-specific phrasing memory</h2>
+          <p>MemoryStore tracks accepted completions separately for each application. Greetings and sign-offs you accept repeatedly in Mail are served locally in 0 ms via fast-path matching.</p>
+        </div>
+        <pre><code>cargo run -- stats</code></pre>
+
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="container">
+        <div class="section-head">
+          <h2>In-place proofreading and concise rewrite</h2>
+          <p>Select a draft paragraph and press Cmd + Shift + G to fix spelling and punctuation, or Cmd + Shift + R to make it shorter while keeping dates, names, and numbers intact.</p>
+        </div>
+        <div class="prose-stack"><ul>
+            <li><a href="grammar-and-layout-fixer.html">Grammar and rewrite shortcuts</a></li>
+            <li><a href="local-phrase-memory-stats.html">How local phrase memory works</a></li>
+          </ul></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h3>AI Assistant for Writing</h3>
+        <p>MIT License. Built in Rust and Swift.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="guides.html">All 30 guides</a></li>
+          <li><a href="system-wide-autocomplete.html">System-wide autocomplete</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Internals</h3>
+        <ul>
+          <li><a href="architecture-and-benchmark.html">Architecture and memory</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Project</h3>
+        <ul>
+          <li><a href="https://github.com/copywriting-software/ai-assistant-for-writing">GitHub repository</a></li>
+          <li><a href="https://github.com/copywriting-software">copywriting-software</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

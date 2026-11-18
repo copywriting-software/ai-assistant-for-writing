@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adaptive Debounce and Request Cancellation</title>
+  <meta name="description" content="How SessionManager coordinates revision IDs, adaptive debounce timings, and CancellationToken to eliminate stale suggestions and UI flicker.">
+  <link rel="canonical" href="https://copywriting-software.github.io/ai-assistant-for-writing/adaptive-debounce-and-cancellation.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Adaptive Debounce and Request Cancellation">
+  <meta property="og:description" content="How SessionManager coordinates revision IDs, adaptive debounce timings, and CancellationToken to eliminate stale suggestions and UI flicker.">
+  <meta property="og:url" content="https://copywriting-software.github.io/ai-assistant-for-writing/adaptive-debounce-and-cancellation.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Adaptive Debounce and Request Cancellation",
+    "url": "https://copywriting-software.github.io/ai-assistant-for-writing/adaptive-debounce-and-cancellation.html"
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container masthead">
+      <a class="brand" href="./">AI Assistant for Writing</a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="./">Overview</a>
+        <a href="system-wide-autocomplete.html">Autocomplete</a>
+        <a href="local-ollama-writing-assistant.html">Local Ollama</a>
+        <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
+        <a href="guides.html">All 30 Guides</a>
+        <a class="btn btn--primary btn--sm" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="band band--hero" aria-labelledby="page-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 id="page-title">Adaptive debounce and request cancellation</h1>
+          <p class="lead">Keep typing smooth by coordinating debounce timers, UI thinking indicators, and HTTP cancellation in Rust.</p>
+          <div class="cta-row">
+            <a class="btn btn--primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+            <a class="btn" href="guides.html">All 30 guides</a>
+          </div>
+        </div>
+        <div class="hero-stage">
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Reference</span>
+            </div>
+            <div class="plate-body">
+              <div class="board-row">
+                <span class="board-label">Base debounce</span>
+                <span class="board-value">350 ms (configurable)</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Boundary debounce</span>
+                <span class="board-value">70% of base (80 ms floor)</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Esc pause</span>
+                <span class="board-value">Suppresses until next whitespace</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">Cancellation</span>
+                <span class="board-value">tokio_util::sync::CancellationToken</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--paper-2">
+      <div class="container">
+        <div class="section-head">
+          <h2>Single source of truth in SessionManager</h2>
+          <p>Instead of showing a thinking spinner in Swift on every keystroke, SessionManager emits ShowThinking only after the adaptive debounce expires and an actual model call begins.</p>
+        </div>
+        <pre><code>cargo test session::tests</code></pre>
+
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="container">
+        <div class="section-head">
+          <h2>Cancelling obsolete HTTP calls</h2>
+          <p>Every new text_changed snapshot increments the session revision, cancels the previous CancellationToken, and aborts any in-flight reqwest future immediately.</p>
+        </div>
+        <div class="prose-stack"><ul>
+            <li><a href="architecture-and-benchmark.html">Architecture overview</a></li>
+            <li><a href="sliding-window-prefix-cache.html">Sliding-window PrefixCache</a></li>
+          </ul></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h3>AI Assistant for Writing</h3>
+        <p>MIT License. Built in Rust and Swift.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="guides.html">All 30 guides</a></li>
+          <li><a href="system-wide-autocomplete.html">System-wide autocomplete</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Internals</h3>
+        <ul>
+          <li><a href="architecture-and-benchmark.html">Architecture and memory</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Project</h3>
+        <ul>
+          <li><a href="https://github.com/copywriting-software/ai-assistant-for-writing">GitHub repository</a></li>
+          <li><a href="https://github.com/copywriting-software">copywriting-software</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

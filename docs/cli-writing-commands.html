@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CLI Usage: complete, fix, rewrite, layout, check, stats</title>
+  <meta name="description" content="All subcommands and flags in the ai-assistant-for-writing Rust CLI.">
+  <link rel="canonical" href="https://copywriting-software.github.io/ai-assistant-for-writing/cli-writing-commands.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="CLI Usage: complete, fix, rewrite, layout, check, stats">
+  <meta property="og:description" content="All subcommands and flags in the ai-assistant-for-writing Rust CLI.">
+  <meta property="og:url" content="https://copywriting-software.github.io/ai-assistant-for-writing/cli-writing-commands.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "CLI Usage: complete, fix, rewrite, layout, check, stats",
+    "url": "https://copywriting-software.github.io/ai-assistant-for-writing/cli-writing-commands.html"
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container masthead">
+      <a class="brand" href="./">AI Assistant for Writing</a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="./">Overview</a>
+        <a href="system-wide-autocomplete.html">Autocomplete</a>
+        <a href="local-ollama-writing-assistant.html">Local Ollama</a>
+        <a href="grammar-and-layout-fixer.html">Grammar &amp; Layout</a>
+        <a href="guides.html">All 30 Guides</a>
+        <a class="btn btn--primary btn--sm" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="band band--hero" aria-labelledby="page-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 id="page-title">CLI commands reference</h1>
+          <p class="lead">Test completions, fix grammar, convert layouts, inspect stats, or run the stdio daemon from the command line.</p>
+          <div class="cta-row">
+            <a class="btn btn--primary" href="https://github.com/copywriting-software/ai-assistant-for-writing">Get on GitHub</a>
+            <a class="btn" href="guides.html">All 30 guides</a>
+          </div>
+        </div>
+        <div class="hero-stage">
+          <div class="plate">
+            <div class="plate-head">
+              <span class="plate-title">Reference</span>
+            </div>
+            <div class="plate-body">
+              <div class="board-row">
+                <span class="board-label">complete &lt;text&gt;</span>
+                <span class="board-value">Print inline completion suffix</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">fix &lt;text&gt;</span>
+                <span class="board-value">Fix grammar and wrong layout</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">rewrite &lt;text&gt;</span>
+                <span class="board-value">Rewrite with --style flag</span>
+              </div>
+              <div class="board-row">
+                <span class="board-label">stats / check</span>
+                <span class="board-value">Inspect memory stats and provider health</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--paper-2">
+      <div class="container">
+        <div class="section-head">
+          <h2>Global flags</h2>
+          <p>Pass --config &lt;path&gt; to load a custom TOML file, or --mock to run any subcommand offline with the built-in MockProvider.</p>
+        </div>
+        <pre><code>cargo run -- --mock complete &quot;Hello, wanted to&quot;
+cargo run -- --mock stats</code></pre>
+
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="container">
+        <div class="section-head">
+          <h2>Daemon modes</h2>
+          <p>Run cargo run --release -- daemon to launch the macOS native helper, or add --stdio to speak newline-delimited JSON-RPC over stdin and stdout.</p>
+        </div>
+        <div class="prose-stack"><ul>
+            <li><a href="stdio-json-rpc-daemon-protocol.html">stdio JSON-RPC protocol</a></li>
+            <li><a href="config-toml-reference.html">Configuration reference</a></li>
+          </ul></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h3>AI Assistant for Writing</h3>
+        <p>MIT License. Built in Rust and Swift.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="guides.html">All 30 guides</a></li>
+          <li><a href="system-wide-autocomplete.html">System-wide autocomplete</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Internals</h3>
+        <ul>
+          <li><a href="architecture-and-benchmark.html">Architecture and memory</a></li>
+          <li><a href="sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Project</h3>
+        <ul>
+          <li><a href="https://github.com/copywriting-software/ai-assistant-for-writing">GitHub repository</a></li>
+          <li><a href="https://github.com/copywriting-software">copywriting-software</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
